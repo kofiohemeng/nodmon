@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Customers</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
+</head>
+<style>
+    img {
+        width: 50px;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border: 3px solid #efefef;
+    }
+</style>
+
+<body>
+
+<div class="container">
+  <h2>Customers</h2>
+  <p>Registed Customer list</p>            
+  <table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        <th>Avatar</th>
+        <th>Name</th>
+        <th>Sex</th>
+        <th>Phone Number</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+
+</body>
+<script>
+
+    $(document).ready(function(){
+
+        $.ajax({
+            url: 'api/get',
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (response) {
+                $.each(response, function(i, item) {
+                    $("tbody").append(
+                        "<tr>"
+                            + "<td><img src='" + item.avatar + "' id='myPic' class='animated'></td>"
+                            + "<td>" + item.name + "</td>"
+                            + "<td>" + item.sex + "</td>"
+                            + "<td>" + item.phone_number + "</td>"
+                        +"</tr>" )
+                })
+            }
+        });;
+            
+    });
+
+</script>
+
+
+</html>
