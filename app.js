@@ -1,34 +1,47 @@
 // app.js
 
-var express = require('express');
-var bodyParser = require('body-parser');
+const http = require('http');
+const url = require('url');
+const fs = require('fs');
 
-var user = require('./routes/user'); // Imports routes for the users
-var app = express();
+const router = require('./routes/router');
+const routes = require('./routes/user');
 
-
-// Set up mongoose connection
-var mongoose = require('mongoose');
-var dev_db_url = 'mongodb://localhost:27017/customer';
-var mongoDB = process.env.MONGODB_URI || dev_db_url;
-mongoose.connect(mongoDB);
-mongoose.Promise = global.Promise;
-var conn = mongoose.connection;
-
-conn.on('error', console.error.bind(console, 'MongoDB connection error:'));
-conn.on('connected', console.error.bind(console, 'MongoDB connected'));
-conn.on('disconnected', console.error.bind(console, 'MongoDB disconnected'));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-app.use('/api', user);
-
-var port = 1234;
-
-app.listen(port, () => {
-    console.log('Server is up and running on port numner ' + port);
+process.on('uncaughtException', function(err) {
+    // handle the error safely
+    console.log('uncaughtException');
+    console.error(err.stack);
+    console.log(err);
 });
 
-app.get('/customer', function (req, res) {
-    res.sendFile(__dirname +'/view/user.html');
+const server = http.createServer(async (req, res) => {
+
+    if (req.url.includes('api')) {
+        await router(req, res, routes);
+    }
+    else if (req.url.includes('css')) {
+        let page_name = url.parse(req.url).pathname;
+        fs.readFile("./" + page_name.substr(1), function (err, html) {
+            res.writeHead(200, {"Content-Type": "text/css"});
+            res.write(html);
+            res.end();
+        });
+    }
+    else {
+        let page_name = url.parse(req.url).pathname;
+
+        if (page_name == "/") { // home page
+            page_name = "/home";
+        }
+
+        fs.readFile("./view/" + page_name.substr(1) + ".html", function (err, html) {
+            res.writeHead(200, {"Content-Type": "text/html"});
+            res.write(html);
+            res.end();
+        });   
+    }        
+});
+
+server.listen(3000, () => {
+    console.log('Server is listening on port 3000');
 });

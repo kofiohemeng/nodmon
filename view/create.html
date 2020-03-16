@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Customers</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Edit Customer</h2>
+  <p class="hrefbtn"><a href="/">Back to Home</a></p>
+  
+  <form id="create_frm" action="/api/customer" method="post">
+    <div>
+        <label class="title">Name</label>
+        <input type="text" id="name" name="name" required >
+    </div>
+    <div>
+        <label class="title">Phone Number</label>
+        <input type="number" id="phone_number" name="phone_number" required >
+    </div>
+    <div>
+      <label class="title">Sex</label>
+      <input type="text" id="sex" name="sex" required>
+    </div>
+    <div>
+      <label class="title">Avatar</label>
+      <input type="url" id="avatar" name="avatar" required >
+    </div>
+    <div>
+        <input type="submit" id="submitButton"  name="submitButton" value="Submit">
+    </div>
+  </form>
+</div>
+
+</body>
+<script>
+
+  $(document).ready(function(){
+
+    var updid = getUrlParameter('id');
+
+    if (updid != null) { // update; load record
+        $.ajax({
+              url: '/api/customer/' + updid,
+              type: 'GET',
+              dataType: 'JSON',
+              success: function (response) {
+                  $.each(response.data, function(i, item) {
+                      $("#name").val(item.name);
+                      $("#sex").val(item.sex);
+                      $("#phone_number").val(item.phone_number);
+                      $("#avatar").val(item.avatar);
+                  })
+              }
+        });
+    }
+
+    $("#create_frm").submit(function(event) {
+
+        /* stop form from submitting normally */
+        event.preventDefault();
+
+        var url = $(this).attr("action"); //get form action url
+        var form_data = JSON.stringify(getFormData($("#create_frm")));
+        var request_method = $(this).attr("method"); //Post
+
+        if (updid != null) { // create
+          request_method = "PUT";
+          url = url + "/" + updid;
+        }
+
+        $.ajax({
+            url : url,
+            type: request_method,
+            dataType: 'JSON',
+            data : form_data,
+            success: function (response) {
+              alert(response.status);
+            }
+        });
+
+    });
+
+  });
+
+    function getFormData($form){
+      var unindexed_array = $form.serializeArray();
+      var indexed_array = {};
+
+      $.map(unindexed_array, function(n, i){
+          indexed_array[n['name']] = n['value'];
+      });
+
+      return indexed_array;
+    }
+
+    var getUrlParameter = function getUrlParameter(sParam) {
+      var sPageURL = window.location.search.substring(1),
+          sURLVariables = sPageURL.split('&'),
+          sParameterName,
+          i;
+
+      for (i = 0; i < sURLVariables.length; i++) {
+          sParameterName = sURLVariables[i].split('=');
+
+          if (sParameterName[0] === sParam) {
+              return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+          }
+      }
+    };
+</script>
+</html>

@@ -1,0 +1,114 @@
+img {
+    width: 50px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border: 3px solid #efefef;
+}
+.table-dark td, .table-dark th, .table-dark thead th {
+    border-color: #454d55 !important; 
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+}
+
+tr {
+    display: table-row;
+    border-width:1px; 
+    border-style:solid;
+    border-color: #454d55 !important; 
+}
+
+.table-dark {
+    color: #fff;
+    background-color: #343a40;
+}
+
+th, .table-dark thead th {
+    border-color: #454d55;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    text-align: center;
+}
+
+.container {
+    width: 60%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: 0;
+}
+
+.table-dark.table-hover tbody tr:hover {
+    color: #fff;
+    background-color: rgba(255,255,255,.075);
+}
+
+p.hrefbtn {
+    text-align: right;
+    padding-right: 10px;
+}
+
+p.hrefbtn a {
+    color: #212529;
+}
+
+td a {
+    color: white;
+}
+
+input {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    margin-right: 15px;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    font-size: 20px !important;
+    color: #9e9e9e !important;
+}
+
+#submitButton {
+    margin-top: 15px;
+    width: auto;
+    float: right;
+}

@@ -4,34 +4,22 @@
   <title>Customers</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
 </head>
-<style>
-    img {
-        width: 50px;
-        border-radius: 50%;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border: 3px solid #efefef;
-    }
-</style>
-
 <body>
 
-<div class="container">
+<div class="container"  >
   <h2>Customers</h2>
-  <p>Registed Customer list</p>            
-  <table class="table table-hover table-dark">
+  <p class="hrefbtn"><a href="/create">Add Customer</a></p>
+  <table id="table" class="table table-hover table-dark">
     <thead>
       <tr>
         <th>Avatar</th>
         <th>Name</th>
         <th>Sex</th>
         <th>Phone Number</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -45,25 +33,42 @@
     $(document).ready(function(){
 
         $.ajax({
-            url: 'api/get',
+            url: '/api/customer',
             type: 'GET',
             dataType: 'JSON',
             success: function (response) {
-                $.each(response, function(i, item) {
+                $.each(response.data, function(i, item) {
                     $("tbody").append(
                         "<tr>"
                             + "<td><img src='" + item.avatar + "' id='myPic' class='animated'></td>"
                             + "<td>" + item.name + "</td>"
                             + "<td>" + item.sex + "</td>"
                             + "<td>" + item.phone_number + "</td>"
+                            + "<td>" + "<a class='delbtn' data-id='" + item._id + "'>Delete</a> | <a class='updbtn' data-id='" + item._id + "'>Update</a>" + "</td>"
                         +"</tr>" )
                 })
             }
-        });;
-            
+        });
+
+        $("#table").on("click", ".delbtn", function() {
+
+          if (confirm('Delete Selected Customer ?')) {
+              $.ajax({
+                url: '/api/customer/' + $(this).data('id'),
+                type: 'DELETE',
+                success: function (response) {
+                    location.reload();
+                }
+              });;
+          }
+        
+        });
+           
+        $("#table").on("click", ".updbtn", function() {
+            window.location.href = "/create?id=" + $(this).data('id');
+        });
+
     });
 
 </script>
-
-
 </html>
